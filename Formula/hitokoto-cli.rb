@@ -1,8 +1,8 @@
 class HitokotoCli < Formula
   desc "从 hitokoto.cn 获取「一言」的命令行工具"
   homepage "https://github.com/xiSage/hitokoto-cli"
-  license "MIT"
   version "0.1.0"
+  license "MIT"
 
   on_macos do
     if Hardware::CPU.intel?
