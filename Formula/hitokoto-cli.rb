@@ -19,7 +19,7 @@ class HitokotoCli < Formula
       url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.1.0/hitokoto-linux-x64.tar.gz"
       sha256 "c265ab870ead7c6b33c3380b7e1f2822d7b2df28d55351666f9c0c29140fd7bf"
     elsif Hardware::CPU.arm?
-      if Hardware::CPU.is-64-bit?
+      if Hardware::CPU.is_64_bit?
         url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.1.0/hitokoto-linux-arm64.tar.gz"
         sha256 "44d9bd650c3395a2d80a499197e5b56e37358f11f330fdd30c68fd0cf0a906d8"
       else
