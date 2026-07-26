@@ -1,4 +1,4 @@
-# XiSage Tap
+# xiSage Tap
 
 ## How do I install these formulae?
 
