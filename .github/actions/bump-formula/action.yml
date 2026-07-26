@@ -1,0 +1,85 @@
+name: 'Bump Homebrew Formula'
+description: 'Update version and SHA256 hashes in a formula file'
+inputs:
+  formula-path:
+    description: 'Path to the formula .rb file'
+    required: true
+  version:
+    description: 'Version string (without v prefix)'
+    required: true
+  tag:
+    description: 'Git tag (with v prefix)'
+    required: true
+  osx-x64-sha:
+    required: true
+  osx-arm64-sha:
+    required: true
+  linux-x64-sha:
+    required: true
+  linux-arm64-sha:
+    required: true
+  linux-arm-sha:
+    required: true
+  committer-token:
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout tap repo
+      uses: actions/checkout@v4
+      with:
+        repository: xiSage/homebrew-tap
+        token: ${{ inputs.committer-token }}
+
+    - name: Update formula
+      shell: bash
+      run: |
+        set -euo pipefail
+        FILE="${{ inputs.formula-path }}"
+        VERSION="${{ inputs.version }}"
+        TAG="${{ inputs.tag }}"
+
+        # 更新 version 字段
+        sed -i "s/^  version .*/  version \"${VERSION}\"/" "$FILE"
+
+        # 更新 url（每个架构分支里的 url 都带 vTAG）
+        sed -i "s|releases/download/v[^\"]*/|releases/download/${TAG}/|g" "$FILE"
+
+        # 更新各架构的 sha256（按 url 行定位下一行的 sha256）
+        update_sha() {
+          local rid="$1" sha="$2"
+          python3 - "$FILE" "$rid" "$sha" <<'PY'
+        import re, sys
+        path, rid, sha = sys.argv[1], sys.argv[2], sys.argv[3]
+        with open(path, 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+        for i, line in enumerate(lines):
+            if f'hitokoto-{rid}.tar.gz' in line:
+                # 找下一个 sha256 行
+                for j in range(i+1, min(i+4, len(lines))):
+                    if 'sha256' in lines[j]:
+                        lines[j] = re.sub(r'sha256 "[^"]*"', f'sha256 "{sha}"', lines[j])
+                        break
+                break
+        with open(path, 'w', encoding='utf-8') as f:
+            f.writelines(lines)
+        PY
+        }
+
+        update_sha "osx-x64"     "${{ inputs.osx-x64-sha }}"
+        update_sha "osx-arm64"   "${{ inputs.osx-arm64-sha }}"
+        update_sha "linux-x64"   "${{ inputs.linux-x64-sha }}"
+        update_sha "linux-arm64" "${{ inputs.linux-arm64-sha }}"
+        update_sha "linux-arm"   "${{ inputs.linux-arm-sha }}"
+
+        echo "=== Updated formula ==="
+        cat "$FILE"
+
+    - name: Commit & push
+      shell: bash
+      run: |
+        git config user.name  "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add ${{ inputs.formula-path }}
+        git commit -m "hitokoto-cli ${{ inputs.version }}"
+        git push
