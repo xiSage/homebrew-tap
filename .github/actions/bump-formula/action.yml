@@ -4,9 +4,6 @@ inputs:
   formula-path:
     description: 'Path to the formula .rb file'
     required: true
-  version:
-    description: 'Version string (without v prefix)'
-    required: true
   tag:
     description: 'Git tag (with v prefix)'
     required: true
@@ -38,9 +35,6 @@ runs:
         FILE="${{ inputs.formula-path }}"
         VERSION="${{ inputs.version }}"
         TAG="${{ inputs.tag }}"
-
-        # 更新 version 字段
-        sed -i "s/^  version .*/  version \"${VERSION}\"/" "$FILE"
 
         # 更新 url（每个架构分支里的 url 都带 vTAG）
         sed -i "s|releases/download/v[^\"]*/|releases/download/${TAG}/|g" "$FILE"
