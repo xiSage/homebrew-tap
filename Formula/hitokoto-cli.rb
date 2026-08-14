@@ -5,25 +5,25 @@ class HitokotoCli < Formula
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.1.2/hitokoto-osx-x64.tar.gz"
-      sha256 "b28f9e4884f996a9cbaccd97881bc3682d669aa5ceb22f207b854d2a6298a368"
+      url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.2.0/hitokoto-osx-x64.tar.gz"
+      sha256 "3b9de16b06ebd5ff2a6d0fa9e51c2c54f92a0e7ea9bbf0cf842c089b97d548a4"
     elsif Hardware::CPU.arm?
-      url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.1.2/hitokoto-osx-arm64.tar.gz"
-      sha256 "8d3f7962e435fc31be0724ea66aa93e4c33b0a2e8416c6cf679a578374d25ab3"
+      url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.2.0/hitokoto-osx-arm64.tar.gz"
+      sha256 "f6842a03b79c78c147c456b5facea130081c579eed949c230e38c39d79aaa7f1"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
-      url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.1.2/hitokoto-linux-x64.tar.gz"
-      sha256 "f87e4e85c8f9df179f59ccf7de092182f66a70248aefa0acd92ec8eb76db27dc"
+      url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.2.0/hitokoto-linux-x64.tar.gz"
+      sha256 "8953f4cbb627bd904ce0fe0bedf7a41b51a1cc5f1760b0eac6848719af9fa6b2"
     elsif Hardware::CPU.arm?
       if Hardware::CPU.is_64_bit?
-        url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.1.2/hitokoto-linux-arm64.tar.gz"
-        sha256 "74751f5c8d7a2d2349fb5221833bc8f8c0cf6644a23421ed481da7da4ae3d4cd"
+        url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.2.0/hitokoto-linux-arm64.tar.gz"
+        sha256 "f5ddcdcba268787d12cded2b88cd50dfda84f23a7152aa53d691b331a232bf8e"
       else
-        url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.1.2/hitokoto-linux-arm.tar.gz"
-        sha256 "df706ec6eb4fabc0a19d114daade0fd9dd8525c1fb2001763534ed6c554f2ce0"
+        url "https://github.com/xiSage/hitokoto-cli/releases/download/v0.2.0/hitokoto-linux-arm.tar.gz"
+        sha256 "7132f295593d85c8016efca7fc2969f7be2da018efbd6bb9bc28765a2c553da9"
       end
     end
   end
